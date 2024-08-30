@@ -15,10 +15,14 @@ grammar QuasarGrammar;
 	private HashMap<String, Var> symbolTable = new HashMap<String, Var>();
 	private ArrayList<Var> currentDeclaration = new ArrayList<Var>();
 	private Program program = new Program();
-	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
-	private String strExpr = "";
-	private IfCommand currentIfCommand;
 	
+	private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
+	private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
+	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
+	
+	
+	private IfCommand currentIfCommand;
+	private WhileCommand currentWhileCommand;
 	
 	private Types currentType;
 	private Types leftType = null, rightType = null;
@@ -103,13 +107,16 @@ program				:
 					;
 
 command				:
-	( 
+	(( 
 		atribuition_command |
-		if_command			| 
 		declaration_command | 
 		read_command 		|
 		write_command 
-	) END_COMMAND 
+	) END_COMMAND)
+	|
+	(
+		if_command
+	)
 	{ 
 		leftType = null; 
 		rightType = null; 
@@ -118,23 +125,25 @@ command				:
 
 //* --------     Commands       -------- *//
 
+
 if_command			:
 	'if' {
 		stack.push(new ArrayList<Command>());
-		strExpr = "";
-		currentIfCommand = new IfCommand();
+		ifStack.push(new IfCommand());
+		expressionStack.push(new ExpressionCommand());
+		
 	}
 	OPEN_P 
 		expression 
-			RELATIONAL_OPERATOR  { strExpr += _input.LT(-1).getText(); }
+			RELATIONAL_OPERATOR  { expressionStack.peek().addExpression(_input.LT(-1).getText()); }
 		expression 
 	CLOSE_P
 	START_BLOCK
 		command+
 	END_BLOCK {
 		//change this should have a target generation to Expressions
-		currentIfCommand.setExpression(strExpr);
-		currentIfCommand.setTrueList(stack.pop()); 
+		ifStack.peek().setExpression(expressionStack.pop());
+		ifStack.peek().setTrueList(stack.pop()); 
 	}
 	(		
 	'else' { 
@@ -143,10 +152,10 @@ if_command			:
 		START_BLOCK
 			command+
 		END_BLOCK {
-			currentIfCommand.setFalseList(stack.pop());
+			ifStack.peek().setFalseList(stack.pop());
 		}
 	)? {
-		stack.peek().add(currentIfCommand);
+		stack.peek().add(ifStack.pop());
 	}
 		
 					;
@@ -210,11 +219,11 @@ write_command		:
 
 					
 expression			:
-	term { strExpr += _input.LT(-1).getText(); } expression_line	
+	term { expressionStack.peek().addExpression(_input.LT(-1).getText()); } expression_line	
 					;
 
 expression_line		:
-	( OPERATOR { strExpr += _input.LT(-1).getText(); } term { strExpr += _input.LT(-1).getText(); } )*
+	( OPERATOR { expressionStack.peek().addExpression(_input.LT(-1).getText()); } term { expressionStack.peek().addExpression(_input.LT(-1).getText()); } )*
 					;
 
 term				:

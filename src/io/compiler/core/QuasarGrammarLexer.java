@@ -102,10 +102,14 @@ public class QuasarGrammarLexer extends Lexer {
 		private HashMap<String, Var> symbolTable = new HashMap<String, Var>();
 		private ArrayList<Var> currentDeclaration = new ArrayList<Var>();
 		private Program program = new Program();
-		private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
-		private String strExpr = "";
-		private IfCommand currentIfCommand;
 		
+		private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
+		private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
+		private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
+		
+		
+		private IfCommand currentIfCommand;
+		private WhileCommand currentWhileCommand;
 		
 		private Types currentType;
 		private Types leftType = null, rightType = null;

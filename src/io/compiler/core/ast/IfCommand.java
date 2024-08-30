@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class IfCommand extends Command {
 	
-	private String expression;
+	private ExpressionCommand expression;
 	private ArrayList<Command> trueList;
 	private ArrayList<Command> falseList;
 
-	public String getExpression() {
+	public ExpressionCommand getExpression() {
 		return expression;
 	}
 
-	public void setExpression(String expression) {
+	public void setExpression(ExpressionCommand expression) {
 		this.expression = expression;
 	}
 
@@ -35,13 +35,13 @@ public class IfCommand extends Command {
 	@Override
 	public String generateTarget() {
 		StringBuilder str = new StringBuilder();
-		str.append("if ("+expression+"){");
+		str.append("if ("+expression.generateTarget()+"){");
 			for (Command cmd: this.trueList) {
 				str.append(cmd.generateTarget());
 			}
 		str.append("}");
 		
-		if (!this.falseList.isEmpty()) {
+		if (this.falseList != null) {
 			
 			str.append("else {");
 			for (Command cmd: this.falseList) {
