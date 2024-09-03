@@ -18,6 +18,7 @@ grammar QuasarGrammar;
 	
 	private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
 	private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
+	private Stack<WhileCommand> loopStack 			 = new Stack<WhileCommand>();
 	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 	
 	
@@ -58,7 +59,7 @@ grammar QuasarGrammar;
 	}
 	
 	public void setTypeIdentifier(String id) {
-		
+			
 		// case var is not declared
 		if (!isDeclared(id)) 
 			throw new QuasarSemanticException("Undeclared Variable: " + id);
@@ -84,11 +85,18 @@ grammar QuasarGrammar;
 			rightType = type;
 		}
 		else {
+		
 			if (rightType.getValue() < type.getValue()) {
 				rightType = type;
 			}
 		}
 	}
+	
+	public void addExpression(String expression) {
+        if (!expressionStack.isEmpty() && expressionStack.peek() != null) {
+            expressionStack.peek().addExpression(expression);
+        }
+    }
 }
 
 //* -------- ------------------  --------*//
@@ -107,7 +115,7 @@ program				:
 					;
 
 command				:
-	(( 
+	((( 
 		atribuition_command |
 		declaration_command | 
 		read_command 		|
@@ -115,8 +123,9 @@ command				:
 	) END_COMMAND)
 	|
 	(
-		if_command
-	)
+		if_command			|
+		while_command		
+	))
 	{ 
 		leftType = null; 
 		rightType = null; 
@@ -125,6 +134,27 @@ command				:
 
 //* --------     Commands       -------- *//
 
+while_command		:
+	('while'|'do:while') {
+	
+	
+		stack.push(new ArrayList<Command>());
+		loopStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
+		expressionStack.push(new ExpressionCommand());
+	}
+		OPEN_P
+			expression
+				RELATIONAL_OPERATOR { addExpression(_input.LT(-1).getText()); }
+			expression
+		CLOSE_P
+		START_BLOCK
+			command+
+		END_BLOCK {
+			loopStack.peek().setExpression(expressionStack.pop());
+			loopStack.peek().setLoopCommands(stack.pop());
+			stack.peek().add(loopStack.pop());
+		}
+					;
 
 if_command			:
 	'if' {
@@ -135,13 +165,12 @@ if_command			:
 	}
 	OPEN_P 
 		expression 
-			RELATIONAL_OPERATOR  { expressionStack.peek().addExpression(_input.LT(-1).getText()); }
+			RELATIONAL_OPERATOR  { addExpression(_input.LT(-1).getText()); }
 		expression 
 	CLOSE_P
 	START_BLOCK
 		command+
 	END_BLOCK {
-		//change this should have a target generation to Expressions
 		ifStack.peek().setExpression(expressionStack.pop());
 		ifStack.peek().setTrueList(stack.pop()); 
 	}
@@ -186,6 +215,7 @@ atribuition_command:
 	IDENTIFIER {
 		setVarInitializated(_input.LT(-1).getText());
 		leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+		
 	}
 	ATRIBUITION_OPERATOR 
 	expression {
@@ -214,22 +244,25 @@ write_command		:
 		 	stack.peek().add(cmdWrite);
 		 }
 	) 
-	CLOSE_P 
+	CLOSE_P
 					;
 
 					
 expression			:
-	term { expressionStack.peek().addExpression(_input.LT(-1).getText()); } expression_line	
+	term { 
+		addExpression(_input.LT(-1).getText()); 
+	} 
+	expression_line	
 					;
 
 expression_line		:
-	( OPERATOR { expressionStack.peek().addExpression(_input.LT(-1).getText()); } term { expressionStack.peek().addExpression(_input.LT(-1).getText()); } )*
+	( OPERATOR { addExpression(_input.LT(-1).getText()); } term { addExpression(_input.LT(-1).getText()); } )*
 					;
 
 term				:
-	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText()); } | 
-	NUMBER			{ setType(Types.NUMBER); }						  | 
-	TEXT			{ setType(Types.TEXT);   }
+	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());  }  | 
+	NUMBER			{ setType(Types.NUMBER);}						   | 
+	TEXT			{ setType(Types.TEXT); }
 					;	
 
 
@@ -249,7 +282,7 @@ NUMBER				: [0-9]+ ('.'[0-9]+)?
 WS					: (' '| '\n' | '\r' | '\t') -> skip	
 					;
 					
-RELATIONAL_OPERATOR : '>' | '<' | '>=' | '<=' | '!=' | '=='
+RELATIONAL_OPERATOR : '>' | '<' | '>=' | '<=' | '><' | '=='
 					; 
 
 //* -------- ------------------  --------*//
