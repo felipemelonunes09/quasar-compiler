@@ -38,6 +38,16 @@ public interface QuasarGrammarListener extends ParseTreeListener {
 	 */
 	void exitCommand(QuasarGrammarParser.CommandContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#while_command}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile_command(QuasarGrammarParser.While_commandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#while_command}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile_command(QuasarGrammarParser.While_commandContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link QuasarGrammarParser#if_command}.
 	 * @param ctx the parse tree
 	 */

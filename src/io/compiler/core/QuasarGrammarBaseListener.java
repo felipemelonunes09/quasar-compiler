@@ -51,6 +51,18 @@ public class QuasarGrammarBaseListener implements QuasarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterWhile_command(QuasarGrammarParser.While_commandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWhile_command(QuasarGrammarParser.While_commandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIf_command(QuasarGrammarParser.If_commandContext ctx) { }
 	/**
 	 * {@inheritDoc}
