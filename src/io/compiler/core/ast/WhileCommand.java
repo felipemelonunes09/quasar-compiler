@@ -32,11 +32,11 @@ public class WhileCommand extends Command{
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append((this.executeFirst) ? "do { ": "while (" + this.expression + " ) {\n" );
+		str.append((this.executeFirst) ? "do { ": "while (" + this.expression.generateTarget() + " ) {\n" );
 		for (Command cmd: this.loopCommands) {
 			str.append(cmd.generateTarget());
 		}
-		str.append((this.executeFirst) ? "} while (" + this.expression + ");\n":"}\n");
+		str.append((this.executeFirst) ? "} while (" + this.expression.generateTarget() + ");\n":"}\n");
 		
 		return str.toString();
 	}
