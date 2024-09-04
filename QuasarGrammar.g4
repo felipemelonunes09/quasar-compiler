@@ -104,6 +104,11 @@ grammar QuasarGrammar;
 			expressionStack.peek().addOperator(operator);
 		}
 	}
+	
+	public void resetTypes() {
+		rightType=null;
+		leftType=null;
+	}
 }
 
 //* -------- ------------------  --------*//
@@ -127,15 +132,15 @@ command				:
 		declaration_command | 
 		read_command 		|
 		write_command 
-	) END_COMMAND)
+	) END_COMMAND
+	)	
 	|
 	(
 		if_command			|
 		while_command		
 	))
 	{ 
-		leftType = null; 
-		rightType = null; 
+		resetTypes();
 	}			
 					;
 
@@ -212,10 +217,11 @@ declaration_command :
 	}
 					;
 
-atribuition_command:
+atribuition_command	:
 	IDENTIFIER {
 		setVarInitializated(_input.LT(-1).getText());
-		leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+		Var v = symbolTable.get(_input.LT(-1).getText()).getType();
+		leftType = v.getType();
 		
 	}
 	ATRIBUITION_OPERATOR 
@@ -223,8 +229,9 @@ atribuition_command:
 		
 		System.out.println("Left Side Expression type = " + leftType);
 		System.out.println("Right Side Expression type = " + rightType);
-	
-		if (leftType.getValue() < rightType.getValue()) {
+		
+		// Consider creating a better type hierarchy than < or > for type mismatch
+		if (leftType.getValue() != rightType.getValue()) {
 			throw new QuasarSemanticException("Type Missmatch on Assigment"); 
 		}
 	}
@@ -327,4 +334,5 @@ COMMA				: ','   	;
 COLLON				: ':'   	;
 
 VAR 				: '-var'	;
-ATRIBUITION_OPERATOR: '='		;
+
+ATRIBUITION_OPERATOR: '->'		;
