@@ -12,7 +12,17 @@ public class DeclarationCommand extends Command{
 
 	@Override
 	public String generateTarget() {
-		return ( this.var.getType() == Types.NUMBER ? "int": "String" ) + " " + this.var.getId() + ";";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		switch (this.var.getType()) {
+			case Types.NUMBER:  	sb.append("int"); 		break;
+			case Types.REALNUMBER:	sb.append("double");	break;
+			case Types.TEXT:		sb.append("String");	break;
+		}
+		sb.append(" " + var.getId());
+		sb.append(";\n");
+		return sb.toString();
 	}
 	
 }

@@ -17,7 +17,18 @@ public class ReadCommand extends Command {
 	@Override
 	public String generateTarget() {
 		// TODO Auto-generated method stub
-		return var.getId() + " = " + ((var.getType() == Types.NUMBER) ? "_scTrx.nextInt();" : "_scTrx.nextLine()") + "\n";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(var.getId() + " = ");
+		
+		switch (var.getType()) {
+			case Types.NUMBER: 		sb.append("_scTrx.nextInt();");		break; 
+			case Types.REALNUMBER: 	sb.append("_scTrx.nextDlouble();");	break; 
+			case Types.TEXT: 		sb.append("_scTrx.nextLine();");	break; 
+		}
+		
+		return sb.toString() + "\n";
 	}
 	
 	public ReadCommand(Var v)

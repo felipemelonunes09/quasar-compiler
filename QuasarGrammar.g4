@@ -212,8 +212,9 @@ declaration_command :
 	)* 
 	COLLON 
 	(
-		'number'  	{ currentType = Types.NUMBER; } | 
-		'text'		{ currentType = Types.TEXT; }
+		'number'  	{ currentType = Types.NUMBER; } 	| 
+		'text'		{ currentType = Types.TEXT;   } 	|
+		'real'		{ currentType = Types.REALNUMBER; }
 	) {
 		updateType();
 	}
@@ -300,9 +301,10 @@ a_expression_line				:
 								;
 
 term				:
-	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());  }  | 
-	NUMBER			{ setType(Types.NUMBER);}						   | 
-	TEXT			{ setType(Types.TEXT); }
+	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());  }	| 
+	NUMBER			{ setType(Types.NUMBER);}						  	|
+	REAL_NUMBER     { setType(Types.REALNUMBER); } 						|
+	TEXT			{ setType(Types.TEXT); }	
 					;	
 
 TEXT				:  '"' ([a-z] | [A-Z] | [0-9] | ' ')* '"'  
@@ -314,7 +316,10 @@ IDENTIFIER			: ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9])*
 OPERATOR			: '+' | '-' | '/' | '*' 
 					;
 
-NUMBER				: [0-9]+ ('.'[0-9]+)?
+NUMBER				: [0-9]+
+					;
+REAL_NUMBER			
+					: [0-9]+'.'[0-9]+
 					;
 
 WS					: (' '| '\n' | '\r' | '\t') -> skip	

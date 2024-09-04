@@ -41,7 +41,11 @@ public class MainClass {
 			// code generation
 			
 			Program program = parser.getProgram();
+			program.setUnusedVarWarning(true);
+			//program.setUnusedVarException(true);
 			program.setName(filename);
+			
+			program.verifyUnusedVar();
 			
 			System.out.println(program.generateTarget());
 			
