@@ -1,7 +1,6 @@
 package io.compiler.core.ast.expression;
 
 import io.compiler.core.ast.Command;
-import io.compiler.types.Var;
 
 public class ExpressionCommand extends Command implements IExpression {
 	
