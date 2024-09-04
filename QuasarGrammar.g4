@@ -80,13 +80,18 @@ grammar QuasarGrammar;
 	}
 	
 	public void setType(Types type) {
+	
+
 		if (rightType == null) {
 			rightType = type;
 		}
 		else {
 		
-			if (rightType.getValue() < type.getValue()) {
+			if (rightType.getValue() <= type.getValue()) {
 				rightType = type;
+			}
+			else {
+				throw new QuasarSemanticException("Type Missmatch on Assigment"); 
 			}
 		}
 	}
@@ -240,6 +245,7 @@ atribuition_command	:
 		
 		currentAttribuitionCommand.setExpression(expressionStack.pop());
 		stack.peek().add(currentAttribuitionCommand);
+		System.out.println("-----------------------------------------------------------");
 	}
 					;
 
@@ -301,10 +307,10 @@ a_expression_line				:
 								;
 
 term				:
-	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());  }	| 
-	NUMBER			{ setType(Types.NUMBER);}						  	|
-	REAL_NUMBER     { setType(Types.REALNUMBER); } 						|
-	TEXT			{ setType(Types.TEXT); }	
+	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText()); System.out.println(_input.LT(-1).getText()); }   | 
+	NUMBER			{ setType(Types.NUMBER); System.out.println(_input.LT(-1).getText());}						  	|
+	REAL_NUMBER     { setType(Types.REALNUMBER);System.out.println(_input.LT(-1).getText()); } 						|
+	TEXT			{ setType(Types.TEXT); System.out.println(_input.LT(-1).getText());}	
 					;	
 
 TEXT				:  '"' ([a-z] | [A-Z] | [0-9] | ' ')* '"'  
@@ -323,6 +329,9 @@ REAL_NUMBER
 					;
 
 WS					: (' '| '\n' | '\r' | '\t') -> skip	
+					;
+					
+COMMENT				: '/*' (.)+? '*/' -> skip
 					;
 					
 RELATIONAL_OPERATOR : '>' | '<' | '>=' | '<=' | '><' | '=='
