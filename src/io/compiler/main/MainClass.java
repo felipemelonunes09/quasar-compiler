@@ -24,7 +24,7 @@ public class MainClass {
 			
 			// creating lexer analyser from an file read
 			
-			String filename = "input2";
+			String filename = "/Users/felipenunes/eclipse-workspace/SimpleParser/input2";
 			
 			lexer = new QuasarGrammarLexer(CharStreams.fromFileName((filename + ".qs")));
 			

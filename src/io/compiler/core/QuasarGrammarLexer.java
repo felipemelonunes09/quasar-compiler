@@ -8,7 +8,7 @@ package io.compiler.core;
 	import io.compiler.types.*;
 	import io.compiler.core.exception.*;
 	import io.compiler.core.ast.*;
-	
+	import io.compiler.core.ast.expression.*;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -107,8 +107,8 @@ public class QuasarGrammarLexer extends Lexer {
 		private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
 		private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
 		private Stack<WhileCommand> loopStack 			 = new Stack<WhileCommand>();
-		private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 		
+		private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 		
 		private IfCommand currentIfCommand;
 		private WhileCommand currentWhileCommand;
@@ -180,11 +180,17 @@ public class QuasarGrammarLexer extends Lexer {
 			}
 		}
 		
-		public void addExpression(String expression) {
+		public void addExpressionTerm(String term) {
 	        if (!expressionStack.isEmpty() && expressionStack.peek() != null) {
-	            expressionStack.peek().addExpression(expression);
+	            expressionStack.peek().addTerm(term);
 	        }
 	    }
+
+		public void addExpressionOperator(String operator) {
+			if (!expressionStack.isEmpty() && expressionStack.peek() != null) {
+				expressionStack.peek().addOperator(operator);
+			}
+		}
 
 
 	public QuasarGrammarLexer(CharStream input) {

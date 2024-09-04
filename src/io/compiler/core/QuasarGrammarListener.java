@@ -8,7 +8,7 @@ package io.compiler.core;
 	import io.compiler.types.*;
 	import io.compiler.core.exception.*;
 	import io.compiler.core.ast.*;
-	
+	import io.compiler.core.ast.expression.*;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -98,25 +98,35 @@ public interface QuasarGrammarListener extends ParseTreeListener {
 	 */
 	void exitWrite_command(QuasarGrammarParser.Write_commandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link QuasarGrammarParser#expression}.
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#boolean_expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(QuasarGrammarParser.ExpressionContext ctx);
+	void enterBoolean_expression(QuasarGrammarParser.Boolean_expressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link QuasarGrammarParser#expression}.
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#boolean_expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(QuasarGrammarParser.ExpressionContext ctx);
+	void exitBoolean_expression(QuasarGrammarParser.Boolean_expressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link QuasarGrammarParser#expression_line}.
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#aritmetic_expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression_line(QuasarGrammarParser.Expression_lineContext ctx);
+	void enterAritmetic_expression(QuasarGrammarParser.Aritmetic_expressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link QuasarGrammarParser#expression_line}.
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#aritmetic_expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression_line(QuasarGrammarParser.Expression_lineContext ctx);
+	void exitAritmetic_expression(QuasarGrammarParser.Aritmetic_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#a_expression_line}.
+	 * @param ctx the parse tree
+	 */
+	void enterA_expression_line(QuasarGrammarParser.A_expression_lineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#a_expression_line}.
+	 * @param ctx the parse tree
+	 */
+	void exitA_expression_line(QuasarGrammarParser.A_expression_lineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link QuasarGrammarParser#term}.
 	 * @param ctx the parse tree

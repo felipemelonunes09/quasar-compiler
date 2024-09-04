@@ -1,5 +1,9 @@
 package io.compiler.core.ast;
+
 import java.util.ArrayList;
+
+import io.compiler.core.ast.expression.*;
+
 // if other types of loop are implemented it should have a commmom class called LoopCommand
 // also in case of For implementation Declaration has to have a class derivation, into aritmetic expression, booleans, and expression composition
 public class WhileCommand extends Command{

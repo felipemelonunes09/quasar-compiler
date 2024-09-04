@@ -8,7 +8,7 @@ package io.compiler.core;
 	import io.compiler.types.*;
 	import io.compiler.core.exception.*;
 	import io.compiler.core.ast.*;
-	
+	import io.compiler.core.ast.expression.*;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -123,25 +123,37 @@ public class QuasarGrammarBaseListener implements QuasarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(QuasarGrammarParser.ExpressionContext ctx) { }
+	@Override public void enterBoolean_expression(QuasarGrammarParser.Boolean_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(QuasarGrammarParser.ExpressionContext ctx) { }
+	@Override public void exitBoolean_expression(QuasarGrammarParser.Boolean_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression_line(QuasarGrammarParser.Expression_lineContext ctx) { }
+	@Override public void enterAritmetic_expression(QuasarGrammarParser.Aritmetic_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression_line(QuasarGrammarParser.Expression_lineContext ctx) { }
+	@Override public void exitAritmetic_expression(QuasarGrammarParser.Aritmetic_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterA_expression_line(QuasarGrammarParser.A_expression_lineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitA_expression_line(QuasarGrammarParser.A_expression_lineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

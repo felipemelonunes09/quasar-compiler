@@ -1,6 +1,7 @@
 package io.compiler.core.ast;
 
 import java.util.ArrayList;
+import io.compiler.core.ast.expression.*;
 
 public class IfCommand extends Command {
 	
