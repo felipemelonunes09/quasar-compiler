@@ -18,13 +18,10 @@ grammar QuasarGrammar;
 	private Program program = new Program();
 	
 	private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
-	private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
-	private Stack<WhileCommand> loopStack 			 = new Stack<WhileCommand>();
+	private Stack<BlockCommand> blockStack			 = new Stack<BlockCommand>();
 	
 	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 	
-	private IfCommand currentIfCommand;
-	private WhileCommand currentWhileCommand;
 	private AttribuitionCommand currentAttribuitionCommand;
 	
 	private Types currentType;
@@ -150,9 +147,8 @@ command				:
 while_command		:
 	('while'|'do:while') {
 	
-	
 		stack.push(new ArrayList<Command>());
-		loopStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
+		blockStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
 	}
 		OPEN_P
 			boolean_expression
@@ -160,17 +156,17 @@ while_command		:
 		START_BLOCK
 			command+
 		END_BLOCK {
-			loopStack.peek().setExpression(expressionStack.pop());
-			loopStack.peek().setLoopCommands(stack.pop());
-			stack.peek().add(loopStack.pop());
+			blockStack.peek().setExpression(expressionStack.pop());
+			blockStack.peek().setBlockCommands(stack.pop());
+			stack.peek().add(blockStack.pop());
 		}
 					;
 
 if_command			:
 	'if' {
-		stack.push(new ArrayList<Command>());
-		ifStack.push(new IfCommand());
 		
+		stack.push(new ArrayList<Command>());
+		blockStack.push(new IfCommand());
 	}
 	OPEN_P 
 		boolean_expression
@@ -178,22 +174,27 @@ if_command			:
 	START_BLOCK
 		command+
 	END_BLOCK {
-		ifStack.peek().setExpression(expressionStack.pop());
-		ifStack.peek().setTrueList(stack.pop()); 
+		
+		blockStack.peek().setExpression(expressionStack.pop());
+			
+		blockStack.peek().setBlockCommands(stack.pop()); 
+		stack.peek().add(blockStack.pop());
 	}
 	(		
 	'else' { 
+		
+		System.out.println("else");
 		stack.push(new ArrayList<Command>());
+		blockStack.push(new ElseCommand());
 	}
 		START_BLOCK
 			command+
 		END_BLOCK {
-			ifStack.peek().setFalseList(stack.pop());
+			blockStack.push(new ElseCommand());
+			blockStack.peek().setBlockCommands(stack.pop());	
+			stack.peek().add(blockStack.pop());
 		}
-	)? {
-		stack.peek().add(ifStack.pop());
-	}
-		
+	)?
 					;
 
 declaration_command :  

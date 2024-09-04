@@ -105,13 +105,10 @@ public class QuasarGrammarLexer extends Lexer {
 		private Program program = new Program();
 		
 		private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
-		private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
-		private Stack<WhileCommand> loopStack 			 = new Stack<WhileCommand>();
+		private Stack<BlockCommand> blockStack			 = new Stack<BlockCommand>();
 		
 		private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 		
-		private IfCommand currentIfCommand;
-		private WhileCommand currentWhileCommand;
 		private AttribuitionCommand currentAttribuitionCommand;
 		
 		private Types currentType;

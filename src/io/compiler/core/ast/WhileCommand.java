@@ -6,12 +6,9 @@ import io.compiler.core.ast.expression.*;
 
 // if other types of loop are implemented it should have a commmom class called LoopCommand
 // also in case of For implementation Declaration has to have a class derivation, into aritmetic expression, booleans, and expression composition
-public class WhileCommand extends Command{
+public class WhileCommand extends BlockCommand {
 	
-	private ExpressionCommand expression;
 	private boolean executeFirst;
-	private ArrayList<Command> loopCommands;
-
 
 	public WhileCommand(boolean executeFirst) {
 		this.executeFirst = executeFirst;
@@ -32,29 +29,13 @@ public class WhileCommand extends Command{
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append((this.executeFirst) ? "do { ": "while (" + this.expression.generateTarget() + " ) {\n" );
-		for (Command cmd: this.loopCommands) {
+		str.append((this.executeFirst) ? "do { ": "while (" + this.getExpression().generateTarget() + " ) {\n" );
+		for (Command cmd: this.getBlockCommands()) {
 			str.append(cmd.generateTarget());
 		}
-		str.append((this.executeFirst) ? "} while (" + this.expression.generateTarget() + ");\n":"}\n");
+		str.append((this.executeFirst) ? "} while (" + this.getExpression().generateTarget() + ");\n":"}\n");
 		
 		return str.toString();
-	}
-
-	public ExpressionCommand getExpression() {
-		return expression;
-	}
-
-	public void setExpression(ExpressionCommand expression) {
-		this.expression = expression;
-	}
-
-	public ArrayList<Command> getLoopCommands() {
-		return loopCommands;
-	}
-
-	public void setLoopCommands(ArrayList<Command> loopCommands) {
-		this.loopCommands = loopCommands;
 	}
 
 }
