@@ -8,8 +8,9 @@ grammar QuasarGrammar;
 	import io.compiler.types.*;
 	import io.compiler.core.exception.*;
 	import io.compiler.core.ast.*;
-	
+	import io.compiler.core.ast.expression.*;
 }
+
 @members {
 	
 	private HashMap<String, Var> symbolTable = new HashMap<String, Var>();
@@ -19,8 +20,8 @@ grammar QuasarGrammar;
 	private Stack<ArrayList<Command>> stack 		 = new Stack<ArrayList<Command>>();
 	private Stack<IfCommand> ifStack 				 = new Stack<IfCommand>();
 	private Stack<WhileCommand> loopStack 			 = new Stack<WhileCommand>();
-	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 	
+	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
 	
 	private IfCommand currentIfCommand;
 	private WhileCommand currentWhileCommand;
@@ -92,11 +93,17 @@ grammar QuasarGrammar;
 		}
 	}
 	
-	public void addExpression(String expression) {
+	public void addExpressionTerm(String term) {
         if (!expressionStack.isEmpty() && expressionStack.peek() != null) {
-            expressionStack.peek().addExpression(expression);
+            expressionStack.peek().addTerm(term);
         }
     }
+
+	public void addExpressionOperator(String operator) {
+		if (!expressionStack.isEmpty() && expressionStack.peek() != null) {
+			expressionStack.peek().addOperator(operator);
+		}
+	}
 }
 
 //* -------- ------------------  --------*//
@@ -140,12 +147,9 @@ while_command		:
 	
 		stack.push(new ArrayList<Command>());
 		loopStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
-		expressionStack.push(new ExpressionCommand());
 	}
 		OPEN_P
-			expression
-				RELATIONAL_OPERATOR { addExpression(_input.LT(-1).getText()); }
-			expression
+			boolean_expression
 		CLOSE_P
 		START_BLOCK
 			command+
@@ -160,13 +164,10 @@ if_command			:
 	'if' {
 		stack.push(new ArrayList<Command>());
 		ifStack.push(new IfCommand());
-		expressionStack.push(new ExpressionCommand());
 		
 	}
 	OPEN_P 
-		expression 
-			RELATIONAL_OPERATOR  { addExpression(_input.LT(-1).getText()); }
-		expression 
+		boolean_expression
 	CLOSE_P
 	START_BLOCK
 		command+
@@ -218,7 +219,7 @@ atribuition_command:
 		
 	}
 	ATRIBUITION_OPERATOR 
-	expression {
+	aritmetic_expression {
 		
 		System.out.println("Left Side Expression type = " + leftType);
 		System.out.println("Right Side Expression type = " + rightType);
@@ -237,6 +238,7 @@ read_command		:
 	}
 	CLOSE_P
 					;
+					
 write_command		:
 	'write' OPEN_P (
 		 term {
@@ -246,26 +248,50 @@ write_command		:
 	) 
 	CLOSE_P
 					;
-
 					
-expression			:
-	term { 
-		addExpression(_input.LT(-1).getText()); 
-	} 
-	expression_line	
-					;
 
-expression_line		:
-	( OPERATOR { addExpression(_input.LT(-1).getText()); } term { addExpression(_input.LT(-1).getText()); } )*
-					;
+boolean_expression				: {
+		expressionStack.push(new BooleanExpressionCommand());
+	}
+	(
+		aritmetic_expression 		{ 
+			ExpressionCommand command = expressionStack.pop();
+			expressionStack.peek().addExpression(command);
+		}
+		| 
+		term { 
+			addExpressionTerm(_input.LT(-1).getText()); 
+		}
+	)
+	RELATIONAL_OPERATOR  { addExpressionOperator(_input.LT(-1).getText()); }
+	(
+		aritmetic_expression		{
+			ExpressionCommand command = expressionStack.pop();
+			expressionStack.peek().addExpression(command);
+	} 
+	|
+		term { 
+			addExpressionTerm(_input.LT(-1).getText()); 
+		}
+	)
+								;
+		
+aritmetic_expression			:
+	term { 
+		expressionStack.push(new AritmeticExpressionCommand(_input.LT(-1).getText()));
+	} 
+	a_expression_line	
+								;
+
+a_expression_line				:
+	( OPERATOR { addExpressionOperator(_input.LT(-1).getText()); } term { addExpressionTerm(_input.LT(-1).getText()); } )*
+								;
 
 term				:
 	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());  }  | 
 	NUMBER			{ setType(Types.NUMBER);}						   | 
 	TEXT			{ setType(Types.TEXT); }
 					;	
-
-
 
 TEXT				:  '"' ([a-z] | [A-Z] | [0-9] | ' ')* '"'  
 					;
