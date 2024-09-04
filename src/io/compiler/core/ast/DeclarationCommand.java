@@ -12,7 +12,6 @@ public class DeclarationCommand extends Command{
 
 	@Override
 	public String generateTarget() {
-				
 		return ( this.var.getType() == Types.NUMBER ? "int": "String" ) + " " + this.var.getId() + ";";
 	}
 	

@@ -10,8 +10,6 @@ public class AritmeticExpressionCommand extends ExpressionCommand {
 
 	@Override
 	public void addOperator(String operator) {
-		
-
 		if (
 			operator.equals("/") ||
 			operator.equals("*") ||
