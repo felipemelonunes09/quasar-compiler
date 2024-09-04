@@ -112,6 +112,7 @@ public class QuasarGrammarLexer extends Lexer {
 		
 		private IfCommand currentIfCommand;
 		private WhileCommand currentWhileCommand;
+		private AttribuitionCommand currentAttribuitionCommand;
 		
 		private Types currentType;
 		private Types leftType = null, rightType = null;

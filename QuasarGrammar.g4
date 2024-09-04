@@ -25,6 +25,7 @@ grammar QuasarGrammar;
 	
 	private IfCommand currentIfCommand;
 	private WhileCommand currentWhileCommand;
+	private AttribuitionCommand currentAttribuitionCommand;
 	
 	private Types currentType;
 	private Types leftType = null, rightType = null;
@@ -220,9 +221,9 @@ declaration_command :
 atribuition_command	:
 	IDENTIFIER {
 		setVarInitializated(_input.LT(-1).getText());
-		Var v = symbolTable.get(_input.LT(-1).getText()).getType();
+		Var v = symbolTable.get(_input.LT(-1).getText());
+		currentAttribuitionCommand = new AttribuitionCommand(v);
 		leftType = v.getType();
-		
 	}
 	ATRIBUITION_OPERATOR 
 	aritmetic_expression {
@@ -234,6 +235,9 @@ atribuition_command	:
 		if (leftType.getValue() != rightType.getValue()) {
 			throw new QuasarSemanticException("Type Missmatch on Assigment"); 
 		}
+		
+		currentAttribuitionCommand.setExpression(expressionStack.pop());
+		stack.peek().add(currentAttribuitionCommand);
 	}
 					;
 
