@@ -123,6 +123,30 @@ public class QuasarGrammarBaseListener implements QuasarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLogical_expression(QuasarGrammarParser.Logical_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLogical_expression(QuasarGrammarParser.Logical_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterL_expression_line(QuasarGrammarParser.L_expression_lineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitL_expression_line(QuasarGrammarParser.L_expression_lineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBoolean_expression(QuasarGrammarParser.Boolean_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -156,7 +156,7 @@ while_command		:
 		blockStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
 	}
 		OPEN_P
-			boolean_expression
+			logical_expression
 		CLOSE_P
 		START_BLOCK
 			command+
@@ -174,7 +174,7 @@ if_command			:
 		blockStack.push(new IfCommand());
 	}
 	OPEN_P 
-		boolean_expression
+		logical_expression
 	CLOSE_P
 	START_BLOCK
 		command+
@@ -188,7 +188,6 @@ if_command			:
 	(		
 	'else' { 
 		
-		System.out.println("else");
 		stack.push(new ArrayList<Command>());
 		blockStack.push(new ElseCommand());
 	}
@@ -245,7 +244,6 @@ atribuition_command	:
 		
 		currentAttribuitionCommand.setExpression(expressionStack.pop());
 		stack.peek().add(currentAttribuitionCommand);
-		System.out.println("-----------------------------------------------------------");
 	}
 					;
 
@@ -269,6 +267,27 @@ write_command		:
 					;
 					
 
+
+logical_expression				: {
+		expressionStack.push(new LogicalExpressionCommand());
+	}
+	boolean_expression {
+		ExpressionCommand command = expressionStack.pop();
+		expressionStack.peek().addExpression(command);
+	}
+	l_expression_line
+								;
+
+l_expression_line				:
+	(
+	('and' | 'or') { addExpressionOperator(_input.LT(-1).getText()); }
+	boolean_expression {
+		ExpressionCommand command = expressionStack.pop();
+		expressionStack.peek().addExpression(command);
+	}
+	)*
+								;
+
 boolean_expression				: {
 		expressionStack.push(new BooleanExpressionCommand());
 	}
@@ -280,6 +299,7 @@ boolean_expression				: {
 		| 
 		term { 
 			addExpressionTerm(_input.LT(-1).getText()); 
+			System.out.println(_input.LT(-1).getText());
 		}
 	)
 	RELATIONAL_OPERATOR  { addExpressionOperator(_input.LT(-1).getText()); }
@@ -291,9 +311,11 @@ boolean_expression				: {
 	|
 		term { 
 			addExpressionTerm(_input.LT(-1).getText()); 
+			System.out.println(_input.LT(-1).getText());
 		}
 	)
 								;
+							
 		
 aritmetic_expression			:
 	term { 
@@ -307,10 +329,10 @@ a_expression_line				:
 								;
 
 term				:
-	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText()); System.out.println(_input.LT(-1).getText()); }   | 
-	NUMBER			{ setType(Types.NUMBER); System.out.println(_input.LT(-1).getText());}						  	|
-	REAL_NUMBER     { setType(Types.REALNUMBER);System.out.println(_input.LT(-1).getText()); } 						|
-	TEXT			{ setType(Types.TEXT); System.out.println(_input.LT(-1).getText());}	
+	IDENTIFIER		{ setTypeIdentifier( _input.LT(-1).getText());}  	| 
+	NUMBER			{ setType(Types.NUMBER);}						  	|
+	REAL_NUMBER     { setType(Types.REALNUMBER);} 						|
+	TEXT			{ setType(Types.TEXT);}	
 					;	
 
 TEXT				:  '"' ([a-z] | [A-Z] | [0-9] | ' ')* '"'  
@@ -337,6 +359,7 @@ COMMENT				: '/*' (.)+? '*/' -> skip
 RELATIONAL_OPERATOR : '>' | '<' | '>=' | '<=' | '><' | '=='
 					; 
 
+
 //* -------- ------------------  --------*//
 //* -------- TERMINAL CHARACTER  --------*//
 //* -------- ------------------  --------*//
@@ -355,3 +378,4 @@ COLLON				: ':'   	;
 VAR 				: '-var'	;
 
 ATRIBUITION_OPERATOR: '->'		;
+

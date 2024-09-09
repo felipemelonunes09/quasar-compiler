@@ -36,7 +36,7 @@ public class MainClass {
 			
 			System.out.println("(+) Quasar Compiler");
 			parser.program();
-			System.out.println("(+) Compilation Successfully");
+			System.out.println("(+) Compilation Successfully"); 
 			
 			// code generation
 			
@@ -45,7 +45,7 @@ public class MainClass {
 			//program.setUnusedVarException(true);
 			program.setName(filename);
 			
-			program.verifyUnusedVar();
+			program.verifyUnusedVar(); 
 			
 			System.out.println(program.generateTarget());
 			

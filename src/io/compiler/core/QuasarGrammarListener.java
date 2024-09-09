@@ -98,6 +98,26 @@ public interface QuasarGrammarListener extends ParseTreeListener {
 	 */
 	void exitWrite_command(QuasarGrammarParser.Write_commandContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#logical_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogical_expression(QuasarGrammarParser.Logical_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#logical_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogical_expression(QuasarGrammarParser.Logical_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QuasarGrammarParser#l_expression_line}.
+	 * @param ctx the parse tree
+	 */
+	void enterL_expression_line(QuasarGrammarParser.L_expression_lineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QuasarGrammarParser#l_expression_line}.
+	 * @param ctx the parse tree
+	 */
+	void exitL_expression_line(QuasarGrammarParser.L_expression_lineContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link QuasarGrammarParser#boolean_expression}.
 	 * @param ctx the parse tree
 	 */
