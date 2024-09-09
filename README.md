@@ -18,8 +18,8 @@ The grammar leverages ANTLR’s syntax to define how the **Quasar** language is 
    
 ### Suported Types
 - **number**: for integer numbers
-- **realnumber** for float numbers
-- **text** for strings
+- **realnumber**: for float numbers
+- **text**: for strings
 
 ### ANTLR Sections
 - **Header**: Imports essential Java classes and custom types, such as `Command`, `Var`, `Types`, and exception handling.
@@ -42,10 +42,14 @@ The compiler can compile the `.qs` file to C++ or java
 java -cp antlr-4.13.2-complete.jar org.antlr.v4.Tool QuasarGrammar.g4 -o src/io/compiler/core -package io.compiler.core
 ```
 
-### How to Compile
+## How to Compile
 ```bash
 
 ```
+
+## Code Examples
+- Simples Calculator
+- Voting System
 
 
 
