@@ -13,22 +13,22 @@ The grammar leverages ANTLR’s syntax to define how the **Quasar** language is 
   - **Variable Declaration**: `-var <identifier> : <type>;`
   - **Assignment**: `<identifier> -> <expression>;`
   - **If-Else**: `if (<condition>) { <commands> } else { <commands> }`
-  - **While Loop**: `while (<condition>) { <commands> }`
+  - **While Loop**: `while (<condition>) { <commands> }` or  `do:while (<condition>) { <commands> }`
   - **I/O**: `read(<identifier>);`, `write(<value>);`
-
-### Grammar Components
-1. **Tokens**:
-   - Identifiers, numbers, operators, and keywords.
-2. **Commands**:
-   - Declaration, assignment, `if`, `while`, `read`, and `write`.
-3. **Expressions**:
-   - Logical and arithmetic expressions for evaluations.
+   
+### Suported Types
+- **number**: for integer numbers
+- **realnumber** for float numbers
+- **text** for strings
 
 ### ANTLR Sections
 - **Header**: Imports essential Java classes and custom types, such as `Command`, `Var`, `Types`, and exception handling.
 - **Members**: Defines utility methods for managing variables, types, and expressions.
 - **Commands**: Implements Quasar’s control structures (e.g., `if`, `while`) and I/O commands.
 - **Expressions**: Manages boolean and arithmetic expressions, enforcing type consistency.
+
+### Target Generation
+The compiler can compile the `.qs` file to C++ or java
 
 ## Getting Started
 
@@ -41,3 +41,11 @@ The grammar leverages ANTLR’s syntax to define how the **Quasar** language is 
 ```bash
 java -cp antlr-4.13.2-complete.jar org.antlr.v4.Tool QuasarGrammar.g4 -o src/io/compiler/core -package io.compiler.core
 ```
+
+### How to Compile
+```bash
+
+```
+
+
+
