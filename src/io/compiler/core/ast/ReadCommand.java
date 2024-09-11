@@ -14,12 +14,13 @@ public class ReadCommand extends Command {
 		this.var = var;
 	}
 	
+	public ReadCommand(Var v){
+		this.var = v;
+	}
+	
 	@Override
 	public String generateTarget() {
-		// TODO Auto-generated method stub
-		
-		StringBuilder sb = new StringBuilder();
-		
+		StringBuilder sb = new StringBuilder();		
 		sb.append(var.getId() + " = ");
 		
 		switch (var.getType()) {
@@ -30,10 +31,17 @@ public class ReadCommand extends Command {
 		
 		return sb.toString() + "\n";
 	}
-	
-	public ReadCommand(Var v)
-	{
-		this.var = v;
-	}
 
+	@Override
+	public String generateCppTarget() {
+		StringBuilder sb = new StringBuilder();
+		switch(var.getType()) {
+			case Types.NUMBER: 		sb.append("std::cin >> " + var.getId() + ";"); break;
+			case Types.REALNUMBER:  sb.append("std::cin >> " + var.getId() + ";"); break;
+			case Types.TEXT: 		sb.append("std::getline(std::cin," + var.getId() + ");"); break;
+		
+		}
+		sb.append("std::cin.ignore();\n");
+		return sb.toString();
+	}
 }

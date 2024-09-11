@@ -57,19 +57,35 @@ public class Program {
 		}
 	}
 	
-	public String generateTarget() {
-				
+	public String generateTarget(String target) {
+
 		StringBuilder str = new StringBuilder();
-		str.append("import java.util.Scanner;\n");
-			str.append("public class " + name + "{ \n");
-			str.append("	public static void main(String args[]) { \n");
-			str.append("		Scanner _scTrx = new Scanner(System.in);\n");
-				for (Command cmd: this.commandList) {
-					str.append(cmd.generateTarget());
-				}
+		if (target == "java") {
+			str.append("import java.util.Scanner;\n");
+				str.append("public class " + name + "{ \n");
+				str.append("	public static void main(String args[]) { \n");
+				str.append("		Scanner _scTrx = new Scanner(System.in);\n");
+					for (Command cmd: this.commandList) {
+						str.append(cmd.generateTarget());
+					}
+				
+				str.append("	}\n");
+				str.append("}\n");
+			return str.toString();
+		}
+		
+		if (target == "cpp") {
+			str.append("#include <iostream>\n");
+			str.append("#include <string>\n");
 			
-			str.append("	}\n");
-			str.append("}\n");
+			str.append("int main() {\n");
+				for (Command cmd: this.commandList) {
+					str.append(cmd.generateCppTarget());
+				}
+			str.append("return 1;\n");
+			str.append("}");
+		}
+		
 		return str.toString();
 	}
 	

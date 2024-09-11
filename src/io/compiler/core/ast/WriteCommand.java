@@ -10,6 +10,11 @@ public class WriteCommand extends Command {
 		return  "System.out.println(" + content + ");\n";
 	}
 	
+	@Override
+	public String generateCppTarget() {
+		return "std::cout << " + content + "<< std::endl;\n";
+	} 
+	
 	public WriteCommand(String content) {
 		this.content = content;
 	}
@@ -25,4 +30,5 @@ public class WriteCommand extends Command {
 	public String getContent() {
 		return this.content;
 	}
+
 }

@@ -19,6 +19,11 @@ public class ExpressionCommand extends Command implements IExpression {
 	public String generateTarget() {
 		return this.expression;
 	}
+	
+	@Override
+	public String generateCppTarget() {
+		return this.expression;
+	}
 
 	@Override
 	public void addTerm(String term) {

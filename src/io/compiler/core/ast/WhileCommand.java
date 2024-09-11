@@ -38,4 +38,18 @@ public class WhileCommand extends BlockCommand {
 		return str.toString();
 	}
 
+	@Override
+	public String generateCppTarget() {
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append((this.executeFirst) ? "do { ": "while (" + this.getExpression().generateTarget() + " ) {\n" );
+		for (Command cmd: this.getBlockCommands()) {
+			str.append(cmd.generateCppTarget());
+		}
+		str.append((this.executeFirst) ? "} while (" + this.getExpression().generateTarget() + ");\n":"}\n");
+		
+		return str.toString();
+	}
+
 }

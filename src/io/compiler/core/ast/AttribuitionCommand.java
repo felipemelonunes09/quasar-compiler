@@ -12,6 +12,10 @@ public class AttribuitionCommand extends Command {
 	public String generateTarget() {
 		return v.getId() + " = " + expression.generateTarget() + ";\n";
 	}
+	
+	public String generateCppTarget() {
+		return v.getId() + " = " + expression.generateTarget() + ";\n";
+	}
 
 	public AttribuitionCommand(Var v, ExpressionCommand expression) {
 		super();

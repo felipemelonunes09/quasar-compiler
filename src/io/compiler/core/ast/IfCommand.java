@@ -19,6 +19,19 @@ public class IfCommand extends BlockCommand {
 			
 		return str.toString();
 	}
+	
+	@Override
+	public String generateCppTarget() {
+		StringBuilder str = new StringBuilder();
+		str.append("if ("+this.getExpression().generateTarget()+"){");
+			for (Command cmd: this.getBlockCommands()){
+				str.append(cmd.generateCppTarget());
+			}
+		str.append("}");
+
+			
+		return str.toString();
+	}
 
 
 }

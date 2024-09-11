@@ -25,9 +25,22 @@ public class ElseCommand extends BlockCommand {
 				str.append(cmd.generateTarget());
 			}
 		str.append("}");
-
-			
 		return str.toString();
 	}
+
+
+	@Override
+	public String generateCppTarget() {
+		StringBuilder str = new StringBuilder();
+		str.append("else {");
+			for (Command cmd: this.getBlockCommands()) {
+				str.append(cmd.generateCppTarget());
+			}
+		str.append("}");
+		return str.toString();
+	}
+
+	
+	
 
 }

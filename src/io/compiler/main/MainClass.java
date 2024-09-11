@@ -47,14 +47,14 @@ public class MainClass {
 			
 			program.verifyUnusedVar(); 
 			
-			System.out.println(program.generateTarget());
+			System.out.println(program.generateTarget("cpp"));
 			
 			try {
-				File f = new File(program.getName() + ".java");
+				File f = new File(program.getName() + ".cpp");
 				FileWriter fr = new FileWriter(f);
 				PrintWriter pr = new PrintWriter(fr);
 				
-				pr.println(program.generateTarget());
+				pr.println(program.generateTarget("cpp"));
 				pr.close();
 			}
 			catch(IOException ex) {
