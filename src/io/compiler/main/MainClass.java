@@ -24,9 +24,12 @@ public class MainClass {
 			
 			// creating lexer analyser from an file read
 			
-			String filename = "/Users/felipenunes/eclipse-workspace/SimpleParser/input2";
+			String path = args[0];
+			String filename = args[1];
+			String target = args[2];
 			
-			lexer = new QuasarGrammarLexer(CharStreams.fromFileName((filename + ".qs")));
+			path = path + filename + ".qs";
+			lexer = new QuasarGrammarLexer(CharStreams.fromFileName((path)));
 			
 			// token flux
 			CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -39,22 +42,20 @@ public class MainClass {
 			System.out.println("(+) Compilation Successfully"); 
 			
 			// code generation
-			
+			//program.setUnusedVarException(true);
 			Program program = parser.getProgram();
 			program.setUnusedVarWarning(true);
-			//program.setUnusedVarException(true);
 			program.setName(filename);
-			
 			program.verifyUnusedVar(); 
 			
-			System.out.println(program.generateTarget("cpp"));
+			System.out.println(program.generateTarget(target));
 			
 			try {
-				File f = new File(program.getName() + ".cpp");
+				File f = new File(program.getName() + "." + target);
 				FileWriter fr = new FileWriter(f);
 				PrintWriter pr = new PrintWriter(fr);
 				
-				pr.println(program.generateTarget("cpp"));
+				pr.println(program.generateTarget(target));
 				pr.close();
 			}
 			catch(IOException ex) {
@@ -62,9 +63,13 @@ public class MainClass {
 			}
 		
 		}
+		catch(ArrayIndexOutOfBoundsException ex) {
+			System.err.println("A path, filename and target must be informed");
+		}
 		catch(Exception ex) {
 			System.err.println("(-) Error: " + ex.getMessage());
 			ex.printStackTrace();
 		}
+		
 	}
 }
