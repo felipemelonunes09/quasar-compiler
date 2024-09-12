@@ -1,18 +1,18 @@
 {
-	-var operation: text
-	-var n1, n2, result: real 
+	-var operation: text;
+	-var n1, n2, result: real;
 
-	write("Write the operation (*, /, +, -)")
-	input(operation);
+	write("Write the operation (*, /, +, -)");
+	read(operation);
 	
 	write("Input the first number: ");
-	input(n1);
+	read(n1);
 
 	write("Input the second number:");
-	input(n2);
+	read(n2);
 
 	if (operation == "+") {
-		result -> nq + n2;
+		result -> n1 + n2;
 	}
 	
 	if (operation == "-") {
