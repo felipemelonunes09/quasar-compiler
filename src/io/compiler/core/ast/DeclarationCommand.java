@@ -23,16 +23,16 @@ public class DeclarationCommand extends Command{
 		return sb.toString();
 	}
 
-	@Override
+	@Override 
 	public String generateCppTarget() {
 		StringBuilder sb = new StringBuilder();
 		switch(this.var.getType()) {
-			case Types.NUMBER: 		sb.append("int"); break;
-			case Types.REALNUMBER: 	sb.append("double"); break;
-			case Types.TEXT: 		sb.append("std::string"); break;
+			case Types.NUMBER: 		sb.append("int " + var.getId() + " = 0;"); break;
+			case Types.REALNUMBER: 	sb.append("double" + var.getId() + " = 0;"); break;
+			case Types.TEXT: 		sb.append("std::string " + var.getId() + ";"); break;
 		}
 		
-		sb.append(" " + var.getId() + ";\n");
+		sb.append("\n");
 		return sb.toString();
 	}
 }
