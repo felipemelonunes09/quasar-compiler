@@ -58,7 +58,9 @@ grammar QuasarGrammar;
 	}
 	
 	public void setTypeIdentifier(String id) {
-			
+		System.out.println("Setting the type of the var");
+		System.out.println(id);
+		
 		// case var is not declared
 		if (!isDeclared(id)) 
 			throw new QuasarSemanticException("Undeclared Variable: " + id);
@@ -80,13 +82,10 @@ grammar QuasarGrammar;
 	}
 	
 	public void setType(Types type) {
-	
-
 		if (rightType == null) {
 			rightType = type;
 		}
 		else {
-		
 			if (rightType.getValue() <= type.getValue()) {
 				rightType = type;
 			}
@@ -156,7 +155,9 @@ while_command		:
 		blockStack.push(new WhileCommand((_input.LT(-1).getText().equals("while") ? false : true)));
 	}
 		OPEN_P
-			logical_expression
+			logical_expression {
+			resetTypes();
+	 	}
 		CLOSE_P
 		START_BLOCK
 			command+
@@ -169,12 +170,13 @@ while_command		:
 
 if_command			:
 	'if' {
-		
 		stack.push(new ArrayList<Command>());
 		blockStack.push(new IfCommand());
 	}
 	OPEN_P 
-		logical_expression
+		logical_expression {
+			resetTypes();
+	 	}
 	CLOSE_P
 	START_BLOCK
 		command+
@@ -275,7 +277,7 @@ logical_expression				: {
 		ExpressionCommand command = expressionStack.pop();
 		expressionStack.peek().addExpression(command);
 	}
-	l_expression_line
+	l_expression_line 
 								;
 
 l_expression_line				:
@@ -285,7 +287,7 @@ l_expression_line				:
 		ExpressionCommand command = expressionStack.pop();
 		expressionStack.peek().addExpression(command);
 	}
-	)*
+	)* 
 								;
 
 boolean_expression				: {
@@ -299,7 +301,6 @@ boolean_expression				: {
 		| 
 		term { 
 			addExpressionTerm(_input.LT(-1).getText()); 
-			System.out.println(_input.LT(-1).getText());
 		}
 	)
 	RELATIONAL_OPERATOR  { addExpressionOperator(_input.LT(-1).getText()); }
@@ -311,7 +312,6 @@ boolean_expression				: {
 	|
 		term { 
 			addExpressionTerm(_input.LT(-1).getText()); 
-			System.out.println(_input.LT(-1).getText());
 		}
 	)
 								;
@@ -335,7 +335,7 @@ term				:
 	TEXT			{ setType(Types.TEXT);}	
 					;	
 
-TEXT				:  '"' ([a-z] | [A-Z] | [0-9] | ' ')* '"'  
+TEXT 				: '"' (~["])* '"'
 					;
 
 IDENTIFIER			: ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9])*

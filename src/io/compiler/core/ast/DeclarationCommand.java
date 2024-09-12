@@ -16,11 +16,10 @@ public class DeclarationCommand extends Command{
 		StringBuilder sb = new StringBuilder();
 		
 		switch (this.var.getType()) {
-			case Types.NUMBER:  	sb.append("int"); 		break;
-			case Types.REALNUMBER:	sb.append("double");	break;
-			case Types.TEXT:		sb.append("String");	break;
+			case Types.NUMBER:  	sb.append("int " + var.getId() + " = 0;\n"); 		break;
+			case Types.REALNUMBER:	sb.append("double " + var.getId() + " = 0;\n"); 	break;
+			case Types.TEXT:		sb.append("String " + var.getId() + " = null;\n"); 	break;
 		}
-		sb.append(" " + var.getId() + "\n");
 		return sb.toString();
 	}
 

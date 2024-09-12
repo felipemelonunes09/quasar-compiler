@@ -60,7 +60,7 @@ public class Program {
 	public String generateTarget(String target) {
 
 		StringBuilder str = new StringBuilder();
-		if (target == "java") {
+		if (target.equals("java")) {
 			str.append("import java.util.Scanner;\n");
 				str.append("public class " + name + "{ \n");
 				str.append("	public static void main(String args[]) { \n");
@@ -71,10 +71,9 @@ public class Program {
 				
 				str.append("	}\n");
 				str.append("}\n");
-			return str.toString();
 		}
 		
-		if (target == "cpp") {
+		if (target.equals("cpp")) {
 			str.append("#include <iostream>\n");
 			str.append("#include <string>\n");
 			

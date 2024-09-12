@@ -23,9 +23,9 @@ public class ReadCommand extends Command {
 		StringBuilder sb = new StringBuilder();		
 		sb.append(var.getId() + " = ");
 		
-		switch (var.getType()) {
+		switch (var.getType()) { 
 			case Types.NUMBER: 		sb.append("_scTrx.nextInt();");		break; 
-			case Types.REALNUMBER: 	sb.append("_scTrx.nextDlouble();");	break; 
+			case Types.REALNUMBER: 	sb.append("_scTrx.nextDouble();");	break; 
 			case Types.TEXT: 		sb.append("_scTrx.nextLine();");	break; 
 		}
 		
