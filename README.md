@@ -51,5 +51,20 @@ java <path> <filename (without extension)> <target (java or cpp)>
 - Simples Calculator
 - Voting System
 
+# Integrantes do Projeto
+
+- **Felipe Nunes Melo** - RA: 11202130262
+- **Henry Miyawaki** - RA: 11202131460
+- **Vinicius de Miranda Galvão Monteiro** - RA: 11202020668
+
+---
+
+## Links
+
+- [Vídeo de Demonstração](https://youtu.be/QhayHgqdSYs)
+- [Compilador Quasar](https://github.com/felipemelonunes09/quasar-compiler)
+- [IDE Quasar](https://github.com/felipemelonunes09/quasar-text-editor)
+- [API Quasar](https://github.com/vinimgm/quasar-compiler-api)
+
 
 
