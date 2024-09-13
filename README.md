@@ -44,7 +44,7 @@ java -cp antlr-4.13.2-complete.jar org.antlr.v4.Tool QuasarGrammar.g4 -o src/io/
 
 ## How to Compile
 ```bash
-
+java <path> <filename (without extension)> <target (java or cpp)>
 ```
 
 ## Code Examples
