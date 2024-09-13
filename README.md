@@ -1,4 +1,6 @@
 # QuasarGrammar - Grammar for Quasar Language
+**Status Atual: ✅ Concluído**
+
 
 ## Project Overview
 This project defines the grammar for the **Quasar** programming language using ANTLR, a powerful parser generator for reading, processing, executing, and translating structured text or binary files. The grammar file includes definitions for various language components, such as variable declarations, arithmetic operations, conditional logic, loops, and I/O commands.
