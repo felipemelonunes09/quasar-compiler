@@ -47,6 +47,41 @@ java -cp antlr-4.13.2-complete.jar org.antlr.v4.Tool QuasarGrammar.g4 -o src/io/
 
 ```
 
+Arithmetic Operators
++: Addition;
+-: Subtraction;
+*: Multiplication;
+/: Division;
+
+Logical Operators
+==: Equality;
+><: Inequality;
+>: Greater than;
+<: Less than;
+>=: Greater than or equal to;
+<=: Less than or equal to;
+
+Example of Usage
+The while loop works only with logical operators as follows:
+
+logical expression = boolean expression + logical operator + boolean expression
+
+These use boolean expressions, which are defined as:
+
+boolean expression = arithmetic expression + logical operador + arithmetic expression
+
+Example:
+
+    while (variable1 == variable2 || variable2 > variable3) {
+         <commands> 
+    }
+
+Attributions can only be made using arithmetic expressions.
+
+Example: -var variable: 5 + variable1;
+
+Note: You can't assign boolean values to variables because there is no boolean type in the language.
+
 ## Code Examples
 - Simples Calculator
 - Voting System
